@@ -63,8 +63,6 @@ public class SimpleTestProcessor extends AbstractProcessor{
 
         testVariable++;
 
-
-
         final ProcessorLog log = this.getLogger();
         final AtomicReference<String> value = new AtomicReference<>();
 
