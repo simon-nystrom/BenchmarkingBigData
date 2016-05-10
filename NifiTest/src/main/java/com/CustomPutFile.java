@@ -139,6 +139,11 @@ public class CustomPutFile extends AbstractProcessor {
             .description("Files that could not be written to the output directory for some reason are transferred to this relationship")
             .build();
 
+    public static final Relationship REL_DONE = new Relationship.Builder()
+            .name("done")
+            .description("Depending on the fileCount value, this sends a message")
+            .build();
+
     private List<PropertyDescriptor> properties;
     private Set<Relationship> relationships;
 
@@ -148,6 +153,7 @@ public class CustomPutFile extends AbstractProcessor {
         final Set<Relationship> procRels = new HashSet<>();
         procRels.add(REL_SUCCESS);
         procRels.add(REL_FAILURE);
+        procRels.add(REL_DONE);
         relationships = Collections.unmodifiableSet(procRels);
 
         // descriptors
@@ -304,10 +310,16 @@ public class CustomPutFile extends AbstractProcessor {
             } else {
                 logger.info("Produced copy of {} at location {}", new Object[]{flowFile, finalCopyFile});
             }
-
-            session.getProvenanceReporter().send(flowFile, finalCopyFile.toFile().toURI().toString(), stopWatch.getElapsed(TimeUnit.MILLISECONDS));
-            session.transfer(flowFile, REL_SUCCESS);
             fileCount++;
+            logger.warn(String.valueOf(fileCount));
+            if(fileCount == 10000) {
+                session.transfer(flowFile, REL_DONE);
+                logger.warn("done");
+            } else {
+                session.getProvenanceReporter().send(flowFile, finalCopyFile.toFile().toURI().toString(), stopWatch.getElapsed(TimeUnit.MILLISECONDS));
+                session.transfer(flowFile, REL_SUCCESS);
+            }
+
         } catch (final Throwable t) {
             if (tempDotCopyFile != null) {
                 try {

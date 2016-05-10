@@ -6,6 +6,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.utils.SystemTime;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -34,12 +35,14 @@ public class Main {
 
         Producer<String, String> producer = new KafkaProducer<>(props);
 
-        String message = new String(Files.readAllBytes(Paths.get("BIPAB.xml")));
+        String message = new String(Files.readAllBytes(Paths.get("/Users/simnys/IdeaProjects/BenchmarkingBigData/Kafka/BIPAB.xml")));
 
         //producer.send(new ProducerRecord<String, String>("time", "start"));
 
 
-        for (int i = 0; i < 100000; i++) {
+        long start = System.nanoTime();
+
+        for (int i = 0; i < 10000; i++) {
             producer.send(new ProducerRecord<String, String>("test1" , Integer.toString(i), message));
         }
 
@@ -56,13 +59,18 @@ public class Main {
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
-        consumer.subscribe(Arrays.asList("test1"));
+        consumer.subscribe(Arrays.asList("time"));
 
-        while (true) {
+        long end = 0;
+
+        while (end == 0) {
             ConsumerRecords<String, String> records = consumer.poll(1);
             for (ConsumerRecord<String, String> record : records) {
+                end = System.nanoTime();
                 System.out.println(record.toString());
             }
         }
+
+        System.out.println((end - start) / 1000000 + " ms");
     }
 }
