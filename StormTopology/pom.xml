@@ -157,7 +157,7 @@
                     <includeProjectDependencies>true</includeProjectDependencies>
                     <includePluginDependencies>false</includePluginDependencies>
                     <classpathScope>compile</classpathScope>
-                    <mainClass>se.joalon.HelloStormTop</mainClass>
+                    <mainClass>se.joalon.StormTopology</mainClass>
                 </configuration>
             </plugin>
         </plugins>

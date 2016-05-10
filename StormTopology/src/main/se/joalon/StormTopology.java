@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
 
-public class HelloStormTop {
+public class StormTopology {
 
     public static class LolBolt extends BaseRichBolt {
 
@@ -103,6 +103,5 @@ public class HelloStormTop {
         } catch (Exception e) {
             throw new IllegalStateException("Couldn't initialize the topology", e);
         }
-
     }
 }
