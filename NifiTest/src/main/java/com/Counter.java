@@ -56,7 +56,8 @@ public class Counter extends AbstractProcessor {
 
         counter++;
 
-        if(counter == 10000) {
+        if(counter == 2000) {
+            counter = 0;
             processSession.transfer(flowfile, REL_DONE);
         } else {
             processSession.transfer(flowfile, REL_DUMP);
