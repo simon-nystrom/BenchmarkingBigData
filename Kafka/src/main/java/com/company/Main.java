@@ -18,10 +18,10 @@ import java.util.Properties;
 
 public class Main {
 
-    public static final int NUMBER_OF_MESSAGES = 2000;
-    public static final int NUMBER_OF_TESTS = 20;
+    public static final int NUMBER_OF_MESSAGES = 10000;
+    public static final int NUMBER_OF_TESTS = 21;
 
-    public static final String KAFKA_BOOTSTRAP_SERVER = "192.168.99.100:6667";
+    public static final String KAFKA_BOOTSTRAP_SERVER = "52.51.188.130:6667";
     public static final String KAFKA_XBRL_TOPIC = "xbrl_messages";
 
     public static void main(String[] args) throws IOException {
@@ -29,7 +29,7 @@ public class Main {
         // Kafka producer
         Properties props = new Properties();
         props.put("bootstrap.servers", KAFKA_BOOTSTRAP_SERVER);
-        props.put("acks", "all");
+        props.put("acks", "1");
         props.put("retries", 0);
         props.put("batch.size", 1);
         props.put("linger.ms", 1);
@@ -51,7 +51,7 @@ public class Main {
         consumer.subscribe(Arrays.asList("time"));
 
 
-        String message = new String(Files.readAllBytes(Paths.get("/Users/simnys/IdeaProjects/BenchmarkingBigData/Kafka/BIPAB.xml")));
+        String message = new String(Files.readAllBytes(Paths.get("C:\\Users\\joaki\\IdeaProjects\\BenchmarkingBigData\\Kafka\\BIPAB.xml")));
 
 
         for (int j = 0; j < NUMBER_OF_TESTS; j++) {
@@ -61,6 +61,8 @@ public class Main {
             long start = System.nanoTime();
             for (int i = 0; i < NUMBER_OF_MESSAGES; i++) {
                 producer.send(new ProducerRecord<String, String>("test1", Integer.toString(i), message));
+                if(i % 9999 == 0 && i != 0)
+                    System.out.println("Sent: " + i + " messages");
             }
 
             producer.close();
@@ -75,7 +77,7 @@ public class Main {
                 }
             }
 
-            System.out.println("Test " + j + ": " + (end - start) / 1000000 + " ms");
+            System.out.println((end - start) / 1000000);
         }
     }
 }
