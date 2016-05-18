@@ -12,10 +12,10 @@
     </parent>
 
     <groupId>groupId</groupId>
-    <artifactId>kafkaHelloWorld</artifactId>
+    <artifactId>XbrlTagCounter</artifactId>
     <packaging>jar</packaging>
 
-    <name>kafkaHelloWorld</name>
+    <name>XbrlTagCounter</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

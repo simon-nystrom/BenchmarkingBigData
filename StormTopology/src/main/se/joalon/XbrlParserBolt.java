@@ -17,12 +17,14 @@ public class XbrlParserBolt extends BaseRichBolt {
     private XBRLParser docStore;
 
     int solidityCount;
+    private int counter;
 
     @Override
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
         _output = outputCollector;
         docStore = new XBRLParser();
         solidityCount = 0;
+//        counter = 0;
     }
 
     @Override
@@ -32,7 +34,10 @@ public class XbrlParserBolt extends BaseRichBolt {
 
             solidityCount += docStore.countByTag("se-gen-base:Soliditet");
 
+//            System.out.println("XbrlParserBolt counter: " + ++counter);
+
             _output.emit(tuple, new Values(String.valueOf(solidityCount)));
+//            _output.emit(new Values(String.valueOf(solidityCount)));
             _output.ack(tuple);
         } catch (Exception e) {
             e.printStackTrace();

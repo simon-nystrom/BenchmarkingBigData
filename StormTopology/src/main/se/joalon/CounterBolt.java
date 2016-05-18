@@ -31,8 +31,9 @@ public class CounterBolt extends BaseRichBolt {
                 counter = 0;
                 _output.emit(tuple, new Values("done with test messages"));
             }
-            System.out.println("Counter: " + counter);
+            System.out.println("CounterBolt counter: " + counter);
             _output.ack(tuple);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

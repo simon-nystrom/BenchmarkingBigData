@@ -14,10 +14,12 @@ import java.util.Map;
 public class CustomHdfsBolt extends HdfsBolt {
 
     private OutputCollector _output;
+    private int counter;
 
     @Override
     public void doPrepare(Map conf, TopologyContext topologyContext, OutputCollector collector) throws IOException {
         _output = collector;
+        counter = 0;
         super.doPrepare(conf, topologyContext, collector);
     }
 
@@ -26,6 +28,8 @@ public class CustomHdfsBolt extends HdfsBolt {
         try{
             super.execute(tuple);
             _output.emit(tuple, new Values(tuple.toString()));
+            System.out.println("CustomHdfsBolt counter: " + ++counter);
+//            _output.emit(new Values(tuple.toString()));
         } catch (Exception e) {
             e.printStackTrace();
         }
